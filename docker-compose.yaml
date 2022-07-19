@@ -1,0 +1,11 @@
+version: "3.3"
+
+services:
+
+  alpine-rust:
+    build:
+      context: "."
+    container_name: "rust"
+    volumes:
+      - "/tmp:/root/.cargo"
+      - "${SRC:-./sample}:/data"
