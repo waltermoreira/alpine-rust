@@ -1,5 +1,5 @@
 fn main() {
-    #[cfg(target_os = "linux")]
+    #[cfg(all(target_os = "linux", target_env = "musl"))]
     {
         // List here all the native libraries that need to be added to the
         // binary. Make sure to add the corresponding package to the
