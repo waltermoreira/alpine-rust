@@ -1,0 +1,42 @@
+# Taskfile
+#
+# Get `Task` from https://taskfile.dev/#/installation
+# List all available tasks:
+#
+#     $ task -a
+#
+version: "3"
+
+vars:
+  DATABASE_FILE: "/tmp/sample.db"
+
+env:
+  DATABASE_URL: "sqlite:{{.DATABASE_FILE}}"
+
+tasks:
+  install-sqlx-cli:
+    desc: "Install command line tools for sqlx"
+    cmds:
+      - cargo install sqlx-cli
+    status:
+      - command -v sqlx > /dev/null
+
+  setup-database:
+    desc: "Create the database pointed by DATABASE_URL and run migrations"
+    cmds:
+      - sqlx database setup
+    generates:
+      - "{{.DATABASE_FILE}}"
+    sources:
+      - migrations/*.sql
+    deps:
+      - install-sqlx-cli
+
+  run:
+    desc: "Run the sample app"
+    cmds:
+      - cargo run
+    deps:
+      - setup-database
+
+    
